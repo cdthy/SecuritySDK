@@ -1,0 +1,31 @@
+{
+  //"token": "",                // 和app的key，用于校验和应用身份确认【业务方直接传递提供，不写在配置文件里】
+  "version": "1.1.1",         // 版本
+  "update_time": 1490113203,  // 上次更新时间，由业务方自己维护（没有新版本，则只需修改更新时间）
+  "timeout": 3600,            // 更新间隔，SDK提供修改接口，业务方根据策略，分批设置更新时间，来缓解服务器压力.默认是单位是秒.
+  //"url": "http://xxx.com/config.json?version=1.1.1", // 更新地址   【业务方直接传递提供，不写在配置文件里】
+  "webview": {
+    "rules":[ //1为白名单，2为黑名单, 按照先后顺序匹配
+      {"control":1, "value":"baidu.com"},
+      {"control":2, "value":"xxx.com"}
+    ],
+    "block_method_invoke_list": [       //需要禁止JS交互的方法名或者参数内容
+      {"methodname": "name1","methodarg":["a1","a2"]},
+      {"methodname": "name2","methodarg":["a1","a2"]}
+    ]
+  },
+  "uri_scheme_list": [            //intent uri scheme中黑列表
+    {"key" : "url", "value": ["baidu.com","xxx.com"]},
+    {"key" : "getbduss", "value": ["1"]}
+  ],
+  "apk_zip_download":{            //应用和插件更新的url白名单
+    "downloadurl":[" baidu.com","10.21.23.17"]
+  },
+  "plugin_invoke_list": [
+    //需要禁止的插件调用(plugin_name "插件名, method_name "方法名"，method_arg “方法参数”，targetclass “目标类名”, intent_data "Intent中需要过滤的内容")
+    {"plugin_name":"com.test" , "method_name": "methoda", "method_arg": ["arg1","arg2"], "targetclass": "aaaa",
+      "intent_data": { "uri" : [], "action":[], "type":[]}},
+    {"plugin_name": "com.test1", "method_name": "methodAA", "method_arg": ["arg1","arg2"], "targetclass": "",
+      "intent_data":{"uri" : [], "action":[], "type":[]}}
+  ]
+}

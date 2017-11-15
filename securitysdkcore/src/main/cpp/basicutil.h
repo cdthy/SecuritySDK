@@ -1,9 +1,10 @@
 //
 // Created by plldzy on 17-11-15.
-//基础工具类:1)字符串jstring处理；2)
+//基础工具类:1)字符串jstring处理；2)生成错误信息；3)byte数组和char数组转换;4）log信息输出
 //
 #include <jni.h>
 #include <string>
+#include <android/log.h>
 
 extern "C"
 #ifndef SECURITYSDK_BASICUTIL_H
@@ -11,6 +12,12 @@ extern "C"
 
 #endif //SECURITYSDK_BASICUTIL_H
 
+#define LOG_TAG    "security-sdk-core" // 这个是自定义的LOG的标识
+#define LOGI(...)  __android_log_print(ANDROID_LOG_INFO,LOG_TAG, __VA_ARGS__)
+#define LOGD(...)  __android_log_print(ANDROID_LOG_DEBUG,LOG_TAG, __VA_ARGS__)
+#define LOGW(...)  __android_log_print(ANDROID_LOG_WARN,LOG_TAG, __VA_ARGS__)
+#define LOGE(...)  __android_log_print(ANDROID_LOG_ERROR,LOG_TAG, __VA_ARGS__)
+#define LOGF(...)  __android_log_print(ANDROID_LOG_FATAL,LOG_TAG, __VA_ARGS__)
 /**
  * jni中string转化成char[]
  * 由于jvm和c++对中文的编码不一样，暂不支持
@@ -51,7 +58,7 @@ jstring charsTojstring(JNIEnv* env, char* str){
  * @param msg       函数执行失败的原因
  * @return          返回失败原因的string对象，执行出错时返回NULL
  */
-jstring getErrorInfo(JNIEnv* env,char *file, char *func, int line, char *msg) {
+jstring getErrorInfo(JNIEnv* env,char *file, const char *func, int line, char *msg) {
     jstring errinfoStr = NULL;
     int errinfo_len = strlen(file) + strlen(func) + sizeof(line) + strlen(msg);
     char *errinfo = (char *) malloc(errinfo_len + 1);

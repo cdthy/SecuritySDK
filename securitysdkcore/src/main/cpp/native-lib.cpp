@@ -1,11 +1,28 @@
 #include <jni.h>
 #include <string>
-#include <basicutil.h>
+#include "basicutil.h"
 extern "C"
-JNIEXPORT jstring JNICALL
-Java_com_nstl_securitysdkcore_SecuritySDKInit_stringFromJNI(
+JNIEXPORT jsize JNICALL
+Java_com_nstl_securitysdkcore_NativeCoreUtil_debugPresent(
         JNIEnv* env,
         jobject /* this */) {
-    std::string hello = "Hello from C++";
-    return env->NewStringUTF(hello.c_str());
+
+    return 1;
+}
+JNIEXPORT jsize JNICALL Java_com_nstl_securitysdkcore_NativeCoreUtil_runInEmulator(
+        JNIEnv* env,
+jobject /* this */) {
+    return 1;
+}
+JNIEXPORT void JNICALL
+Java_com_nstl_securitysdkcore_NativeCoreUtil_rePackage(
+        JNIEnv* env,
+jobject /* this */, jobject verify) {
+
+}
+JNIEXPORT jsize JNICALL
+Java_com_nstl_securitysdkcore_NativeCoreUtil_detectInject(
+        JNIEnv* env,
+jobject /* this */) {
+return 1;
 }
