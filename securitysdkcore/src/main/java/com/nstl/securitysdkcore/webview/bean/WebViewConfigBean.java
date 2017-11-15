@@ -3,7 +3,7 @@ package com.nstl.securitysdkcore.webview.bean;
 import java.util.List;
 
 /**
- * Created by daizhongyin on 2017/4/27.
+ * Created by plldzy on 2017/4/27.
  */
 
 public class WebViewConfigBean {

@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by daizhongyin on 2017/4/27.
+ * Created by plldzy on 2017/4/27.
  */
 
 public class SafeWebView extends WebView {
