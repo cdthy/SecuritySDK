@@ -12,7 +12,7 @@ public class NativeCoreUtil {
     }
     //public native String stringFromJNI();
     public native int debugPresent();		// 调试
-    public native int runInEmulator();	// 模拟器
+    public native int runInEmulator(Object mContext);	// 模拟器
     public native void rePackage(IVerifyListener verifyListener);		// 重打包
     public native int detectInject();       //注入检测
 
