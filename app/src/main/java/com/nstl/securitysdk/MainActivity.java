@@ -4,6 +4,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import com.nstl.securitysdkcore.HelpUtil;
+import com.nstl.securitysdkcore.reinforce.DetectRootUtil;
+import com.nstl.securitysdkcore.reinforce.bean.InstallPackageInfo;
+
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
 
     // Used to load the 'native-lib' library on application startup.
@@ -18,7 +24,15 @@ public class MainActivity extends AppCompatActivity {
 
         // Example of a call to a native method
         TextView tv = (TextView) findViewById(R.id.sample_text);
-        tv.setText("hello“");
+        //tv.setText("hello“");
+        /*HelpUtil helpUtil = new HelpUtil();
+        List<InstallPackageInfo> installPackageInfoList = helpUtil.getInstallPackageAndSig(this);
+        StringBuilder builder = new StringBuilder();
+        for(InstallPackageInfo pkg : installPackageInfoList){
+            builder.append(pkg.getPkgName());
+        }*/
+        DetectRootUtil detectRootUtil = DetectRootUtil.getInstance(this);
+        tv.setText("设备是否：" + detectRootUtil.isRoot());
     }
 
     /**

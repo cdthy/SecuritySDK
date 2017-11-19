@@ -1,4 +1,4 @@
-package com.nstl.securitysdkcore.bean;
+package com.nstl.securitysdkcore.crypt.bean;
 
 /**
  * Created by plldzy on 17-11-15.

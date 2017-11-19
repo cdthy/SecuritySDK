@@ -1,6 +1,6 @@
-package com.nstl.securitysdkcore;
+package com.nstl.securitysdkcore.crypt;
 
-import com.nstl.securitysdkcore.bean.EncryptData;
+import com.nstl.securitysdkcore.crypt.bean.EncryptData;
 
 import java.io.InputStream;
 import java.util.List;

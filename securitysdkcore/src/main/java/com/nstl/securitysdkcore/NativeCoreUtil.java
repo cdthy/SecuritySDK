@@ -1,5 +1,7 @@
 package com.nstl.securitysdkcore;
 
+import com.nstl.securitysdkcore.reinforce.IVerifyListener;
+
 /**
  * Created by plldzy on 17-11-15.
  */
@@ -15,5 +17,7 @@ public class NativeCoreUtil {
     public native int runInEmulator(Object mContext);	// 模拟器
     public native void rePackage(IVerifyListener verifyListener);		// 重打包
     public native int detectInject();       //注入检测
+    public native int isExisSUAndExecute();             //是否存在su文件并且是可执行的
+
 
 }

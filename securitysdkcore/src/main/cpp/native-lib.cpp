@@ -61,3 +61,14 @@ Java_com_nstl_securitysdkcore_NativeCoreUtil_detectInject(JNIEnv *env, jobject i
     // TODO
 
 }
+extern "C"
+JNIEXPORT jint JNICALL Java_com_nstl_securitysdkcore_NativeCoreUtil_isExisSUAndExecute(JNIEnv *env, jobject instance){
+    int result = 0;
+    char* path[5] = {"/system/bin/su", "/system/xbin/su", "/system/xbin/busybox","/system/bin/busybox", "/data/local/tmp/busybox"};
+    for (int i = 0; i < 5; ++i) {
+        if (access(path[i],F_OK|X_OK) == 0)             //判断上述文件是否存在并且拥有可执行的权限
+            result ++;
+    }
+    return result;
+
+}

@@ -1,4 +1,4 @@
-package com.nstl.securitysdkcore;
+package com.nstl.securitysdkcore.reinforce;
 
 /**
  * Created by plldzy on 17-11-15.
