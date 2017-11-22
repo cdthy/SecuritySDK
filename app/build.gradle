@@ -1,22 +1,6 @@
 apply plugin: 'com.android.application'
 
 android {
-    signingConfigs {
-        debug {
-            keyAlias 'mykey'
-            keyPassword 'qw42158'
-            storeFile file('C:/Users/ffthy/Desktop/thy.keystore')
-            storePassword 'qw42158'
-            v2SigningEnabled false
-        }
-        release {
-            keyAlias 'mykey'
-            keyPassword 'qw42158'
-            storeFile file('C:/Users/ffthy/thy.keystore')
-            storePassword 'qw42158'
-            v2SigningEnabled false
-        }
-    }
     compileSdkVersion 26
     buildToolsVersion "26.0.0"
     defaultConfig {
