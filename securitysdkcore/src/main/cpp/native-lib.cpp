@@ -3,6 +3,8 @@
 #include <unistd.h>
 #include "Util.h"
 #include "SimulatorDetected.h"
+#include "getSign.h"
+#include "InjectDetected.h"
 extern "C"
 JNIEXPORT jint JNICALL
 Java_com_nstl_securitysdkcore_NativeCoreUtil_debugPresent(JNIEnv *env, jobject instance) {
@@ -47,18 +49,36 @@ Java_com_nstl_securitysdkcore_NativeCoreUtil_runInEmulator(JNIEnv *env, jobject 
 
 extern "C"
 JNIEXPORT void JNICALL
-Java_com_nstl_securitysdkcore_NativeCoreUtil_rePackage(JNIEnv *env, jobject instance,
+Java_com_nstl_securitysdkcore_NativeCoreUtil_rePackage(JNIEnv *env, jobject instance,jobject mContext,
                                                        jobject verifyListener) {
 
     // TODO
+    char *sha1 = getAppSignSha1(env, mContext);
+    jboolean result = checkValidity(env,sha1);
+    jclass jhandlerClass = env->GetObjectClass(verifyListener);
+    jmethodID SuccessMethodId = env->GetMethodID(jhandlerClass, "onVerifySuccess", "()V");
+    jmethodID FailMethodId = env->GetMethodID(jhandlerClass, "onVerifyFail", "()V");
+
+    if(result){
+        env->CallVoidMethod(verifyListener, SuccessMethodId);
+
+    }else{
+        env->CallVoidMethod(verifyListener, FailMethodId);
+    }
+
+
 
 }
 
 extern "C"
 JNIEXPORT jint JNICALL
-Java_com_nstl_securitysdkcore_NativeCoreUtil_detectInject(JNIEnv *env, jobject instance) {
+Java_com_nstl_securitysdkcore_NativeCoreUtil_detectInject(JNIEnv *env, jobject instance,jobject mContext) {
 
     // TODO
+       int i =getimagebase();
+
+        return i;
+
 
 }
 extern "C"
