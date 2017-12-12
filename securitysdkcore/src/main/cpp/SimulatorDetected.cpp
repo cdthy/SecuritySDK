@@ -294,7 +294,6 @@ int simulatorDetected(JNIEnv *env,jobject mContext,const int threshold)
     //先判断蓝牙文件
     int weight_total = 0;
     weight_total += getWeightByBlueStack();
-    weight_total += getWeightByPipeFile();
     if( weight_total >= threshold){
         return 1;
     }

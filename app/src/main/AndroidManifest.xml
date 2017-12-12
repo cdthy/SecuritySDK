@@ -5,6 +5,7 @@
 
     <!--安全sdk所需要的运行权限-->
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
         android:allowBackup="true"
