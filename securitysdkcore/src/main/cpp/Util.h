@@ -5,6 +5,7 @@
 #include <jni.h>
 #include <string>
 #include <stdlib.h>
+#include <android/log.h>
 #ifndef SECURITYSDK_BASICUTIL_H
 #define SECURITYSDK_BASICUTIL_H
 
