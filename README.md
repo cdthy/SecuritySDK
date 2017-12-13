@@ -8,5 +8,5 @@
 String str = SecuritySDKInit.getConfigStringValueByKey(SecuritySDKInit.WEBVIEWCONFIG);
 WebviewConfig webviewConfig = JSON.parseObject(str, WebviewConfig.class);
 
-项目参与成员：daizy(daizhongyin@126.com)、张林、唐海洋。
 注意:securicysdkcore是安全sdk的核心功能实现，app是测试安全sdk的demo apk
+项目成员：daizy(daizhongyin@126.com)、张林(97615274@qq.com)、唐海洋(ffthy@qq.com)。如有任何问题，欢迎随时联系我们。
