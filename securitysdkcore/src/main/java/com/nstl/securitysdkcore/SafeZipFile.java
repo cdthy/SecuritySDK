@@ -5,77 +5,92 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.text.TextUtils;
-import android.util.Log;
 
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Enumeration;
 import java.util.zip.ZipEntry;
-import java.util.zip.ZipException;
-import java.util.zip.ZipFile;
+import java.util.zip.ZipInputStream;
+
+
 /**
- * Created by plldzy on 17-11-15.
+ * Created by zhanglin22 on 2017/11/20.
  */
-
-
 /**
  * 为了保证ZIPFile读取APK文件的安全性，确保只有一个Dex，此外还需要确保APK中的签名和其自生代码的信息一致
  */
-public class SafeZipFile extends ZipFile {
+public class SafeZipFile{
+
     private String apkFilePath = null;
     private boolean zipFileIsIllegal = false;
+    private Context context;
+    private String md5Sig;
 
-    public SafeZipFile(File file) throws ZipException, IOException {
-        super(file);
+    /**
+     *
+     * @param file
+     * @param context Context上下文
+     * @param md5Sig 要校验的签名证书的MD5值(可以通过keytool工具来查看)
+     */
+    public SafeZipFile(File file, Context context, String md5Sig){
         apkFilePath = file.getAbsolutePath();
+        context = context;
+        md5Sig = md5Sig;
     }
 
     /**
      * true表示apk或者签名zip为非法的,false表示zip或者apk合法
-     * @param ct            Context上下文
-     * @param md5Sig           要校验的签名证书的MD5值(可以通过keytool工具来查看)
      * @return
      */
-    public boolean checkSig(Context ct,String md5Sig){
-        if(dexCheck() || apkSignCheck(ct, md5Sig)){
-            zipFileIsIllegal = true;
-        }else{
-            zipFileIsIllegal = false;
+    public boolean isLegalZipFile(){
+        try {
+            if( this.dexCheck() && this.apkSignCheck(this.context,this.md5Sig)){
+                return true;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        return zipFileIsIllegal;
+        return false;
     }
 
-    @Override
-    public ZipEntry getEntry(String name) {
-        if (zipFileIsIllegal){
-            return null;
-        }
-        return super.getEntry(name);
-    }
-
-    @Override
-    public InputStream getInputStream(ZipEntry entry) throws IOException {
-        if (zipFileIsIllegal){
-            return null;
-        }
-        return super.getInputStream(entry);
-    }
-
-    @Override
-    public Enumeration<? extends ZipEntry> entries() {
-        if (zipFileIsIllegal){
-            return null;
-        }
-        return super.entries();
-    }
-    private boolean dexCheck(){
+    /**
+     * 判断zipfile的合法性，防止../ 及 重复的dex文件
+     * @return
+     * @throws IOException
+     */
+    private boolean dexCheck() throws IOException {
         //检查APK中的所有dex文件，确保不存在相同的姓名，注意多个dex文件的情况-classes.dex,classes2.dex
+        File srcFile = new File(this.apkFilePath);
+        FileInputStream fileInputStream = new FileInputStream(srcFile);
+        ZipInputStream zipInputStream = new ZipInputStream(new BufferedInputStream(fileInputStream));
+        StringBuilder fileNameBuilder = new StringBuilder();
+        ZipEntry zipEntry = null;
+        while ((zipEntry = zipInputStream.getNextEntry()) != null){
+            if(zipEntry.isDirectory()){
+                continue;
+            }else{
+                String entryName = zipEntry.getName();
+                if( entryName.endsWith(".dex") ){
+                    if( fileNameBuilder.toString().contains( entryName )){
+                        return false;
+                    }else{
+                        fileNameBuilder.append(entryName);
+                    }
+                }
+            }
+        }
         return true;
     }
+
+    /**
+     * 检查apk的签名
+     * @param ct
+     * @param sig
+     * @return
+     */
     private boolean apkSignCheck(Context ct, String sig){
         //2.读取APK中的META-INF目录下的签名文件，验证一致性
         boolean flag = true;
@@ -93,6 +108,12 @@ public class SafeZipFile extends ZipFile {
         }
         return flag;
     }
+
+    /**
+     * md5签名
+     * @param byteStr
+     * @return
+     */
     private  String encryptionMD5(byte[] byteStr) {
         MessageDigest messageDigest = null;
         StringBuffer md5StrBuff = new StringBuffer();
