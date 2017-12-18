@@ -17,7 +17,7 @@ import java.util.zip.ZipInputStream;
 
 
 /**
- * Created by zhanglin22 on 2017/11/20.
+ * Created by Lin on 2017/11/20.
  */
 /**
  * 为了保证ZIPFile读取APK文件的安全性，确保只有一个Dex，此外还需要确保APK中的签名和其自生代码的信息一致
