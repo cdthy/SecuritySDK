@@ -39,12 +39,15 @@
           "1": "baidu.com"
         },
         "methodNmae": "openurl",
-        "type": 1
+        "type": 0
       }
     ],
     "urlBlackList": [
       "test.com",
       "attack.com"
+    ],
+    "urlWhiteList": [
+      "baidu.com"
     ]
   }
 }
