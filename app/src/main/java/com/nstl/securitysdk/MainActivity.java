@@ -1,5 +1,11 @@
 package com.nstl.securitysdk;
 
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
+import android.os.IBinder;
+import android.os.RemoteException;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -35,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // Example of a call to a native method
-        TextView tv = (TextView) findViewById(R.id.sample_text);
+     //   TextView tv = (TextView) findViewById(R.id.sample_text);
         //tv.setText("hello“");
         /*HelpUtil helpUtil = new HelpUtil();
         List<InstallPackageInfo> installPackageInfoList = helpUtil.getInstallPackageAndSig(this);
@@ -44,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
             builder.append(pkg.getPkgName());
         }*/
         DetectRootUtil detectRootUtil = DetectRootUtil.getInstance(this);
-        tv.setText("设备是否root：" + detectRootUtil.isRoot());
+        //tv.setText("设备是否root：" + detectRootUtil.isRoot());
         SecuritySDKConfig sdkConfig = new SecuritySDKConfig();
 
         //webview的过滤配置规则
@@ -115,13 +121,39 @@ public class MainActivity extends AppCompatActivity {
         String jsonStr = JSON.toJSONString(sdkConfig);
         Log.i(TAG, jsonStr);
         sdkConfig = JSON.parseObject(jsonStr, SecuritySDKConfig.class);
-        tv.setText(sdkConfig.getIntentUriList().get(0).getUriHostList().get(0));
+        //tv.setText(sdkConfig.getIntentUriList().get(0).getUriHostList().get(0));
 
         //配置文件的初始化
         Map<String, String> params = new HashMap<String, String>();
         params.put("username", "test");
         params.put("token", "123456");
-        SecuritySDKInit.getInstance(this).syncConfig("http://192.168.199.164:8080/mytest/test.txt", params);
+     //   SecuritySDKInit.getInstance(this).syncConfig("http://192.168.199.164:8080/mytest/test.txt", params);
+
+
+        //远程调用 签名检测
+        final  TextView tv3=(TextView) findViewById(R.id.IPC_check);
+        Intent service = new Intent(MainActivity.this, MyService.class);
+        ServiceConnection serviceConnection=new ServiceConnection() {
+            @Override
+            public void onServiceConnected(ComponentName name, IBinder service) {
+                if((service instanceof IMyAidlInterface.Stub)==false){
+                    Log.d(TAG, "service "+(service instanceof IMyAidlInterface.Stub));
+                }
+                IMyAidlInterface myAidlInterface=IMyAidlInterface.Stub.asInterface(service);
+                try {
+                    String  s = myAidlInterface.getInfoFromCli("hello from Cli");
+                    tv3.setText(s);
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onServiceDisconnected(ComponentName name) {
+                Log.d(TAG, "onServiceDisconnected: 连接断开");
+            }
+        };
+        bindService(service, serviceConnection, Context.BIND_AUTO_CREATE);
     }
 
     /**

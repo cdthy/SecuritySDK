@@ -33,5 +33,12 @@
         android:layout_below="@id/checkSign_id"
 
         />
+    <TextView
+        android:id="@+id/IPC_check"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="远程调用"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/InjectDetected_id"/>
 
 </RelativeLayout>
