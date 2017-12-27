@@ -96,3 +96,8 @@
             }
         });
 	其中的functionJs 为步骤1注册的handler名称，可以任意指定。
+##NativeCoreUtil
+	提供debugPresent（检测应用是否处于调试中）、runInEmulator（检测应用是否处于模拟器）、rePackage（重打包检查）、
+	detectInject（检测应用是否被xposed，substrate等框架注入）、isExisSUAndExecute（是否被root）、getRemoteAppSign（获取远程应用的签名）6个函数
+##BinderSecurityUtil
+    提供函数checkClientSign方法，在方法内部获取客户端的包名和签名，传给远端校验。需要注意的是该方法只能放在服务中的接口实现中调用，具体使用见Demo中Myservice。
